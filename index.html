@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AHSAN MAFI - Dil Ki Baat</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Amiri:wght@700&display=swap');
+  
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0a0e27;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+  }
+  
+  /* Barish ka effect */
+  .rain {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .rain span {
+    position: absolute;
+    width: 1px;
+    height: 100px;
+    background: linear-gradient(transparent, rgba(255,255,255,0.3));
+    animation: rainFall 1s linear infinite;
+  }
+  
+  @keyframes rainFall {
+    0% { transform: translateY(-100vh); }
+    100% { transform: translateY(100vh); }
+  }
+  
+  .card {
+    position: relative;
+    z-index: 2;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(30px);
+    border-radius: 40px;
+    padding: 60px 50px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 
+      0 0 50px rgba(255,215,0,0.2),
+      inset 0 0 50px rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,215,0,0.3);
+    text-align: center;
+    color: white;
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .top-heading {
+    font-size: 52px;
+    font-weight: 700;
+    margin-bottom: 45px;
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(255,215,0,0.6);
+    letter-spacing: 5px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.3); }
+  }
+  
+  .ayah {
+    font-family: 'Amiri', serif;
+    font-size: 32px;
+    line-height: 2.5;
+    margin-bottom: 30px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    animation: fadeIn 2s ease;
+  }
+  
+  .translation {
+    font-size: 21px;
+    line-height: 2.2;
+    margin-bottom: 20px;
+    opacity: 0.95;
+    font-style: italic;
+  }
+  
+  .surah {
+    font-size: 19px;
+    margin-bottom: 55px;
+    color: #FFD700;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 35px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  button {
+    padding: 22px 55px;
+    font-size: 22px;
+    border: none;
+    border-radius: 80px;
+    cursor: pointer;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-weight: 700;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 2px;
+  }
+  
+  button::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.5s;
+  }
+  
+  button:hover::before {
+    left: 100%;
+  }
+  
+  button:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  }
+  
+  .btn-yes {
+    background: linear-gradient(135deg, #00c853, #64dd17);
+    color: white;
+    box-shadow: 0 10px 40px rgba(0,200,83,0.4);
+  }
+  
+  .btn-no {
+    background: linear-gradient(135deg, #d50000, #ff1744);
+    color: white;
+    box-shadow: 0 10px 40px rgba(213,0,0,0.4);
+  }
+  
+  .message {
+    display: none;
+    margin-top: 45px;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(30,30,60,0.4));
+    border-radius: 35px;
+    border: 1px solid rgba(255,215,0,0.2);
+    animation: slideUp 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-align: right;
+  }
+  
+  .message.show {
+    display: block;
+  }
+  
+  .special-line {
+    font-size: 30px;
+    font-weight: 700;
+    background: linear-gradient(45deg, #FFD700, #FFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+    text-align: center;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  .paragraph {
+    text-align: justify;
+    font-size: 20px;
+    line-height: 2.8;
+    margin-top: 30px;
+    padding: 35px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 25px;
+    border-right: 5px solid #FFD700;
+    box-shadow: inset 0 0 30px rgba(255,215,0,0.1);
+    white-space: pre-line;
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(60px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @media (max-width: 600px) {
+    .card { padding: 45px 25px; }
+    .top-heading { font-size: 38px; }
+    .ayah { font-size: 24px; }
+    button { padding: 18px 40px; font-size: 19px; }
+    .paragraph { font-size: 17px; line-height: 2.5; padding: 25px; }
+  }
+</style>
+</head>
+<body>
+  <div class="rain" id="rain"></div>
+  
+  <div class="card">
+    <h1 class="top-heading">AHSAN MAFI</h1>
+    
+    <div class="ayah">
+      "وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ<br>
+      وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ"
+    </div>
+    
+    <div class="translation">
+      "aur jo log ghusse ko pee jatay hain aur logon ko maaf kar detay hain<br>
+      aur Allah neki karnay walon se mohabbat karta hai"
+    </div>
+    
+    <div class="surah">
+      Surah Aal-e-Imran, Ayat 134
+    </div>
+    
+    <div class="buttons" id="buttons">
+      <button class="btn-yes" onclick="showYes()">BAAT KRON GA MA</button>
+      <button class="btn-no" onclick="showNo()">BAAT NI KRUN GA</button>
+    </div>
+    
+    <div class="message" id="yesMsg">
+      <p class="special-line">Alhamdulillah Ahsan bhai... Tu wapis aa gaya 💚</p>
+      <p>Tu ne "BAAT KRON GA MA" keh diya... kasam se bhai meri saans wapis aa gayi. Allah tujhe is maafi ka ajar de.</p>
+      <div class="paragraph">Ahsan 
+Bhai meri ghalti hy...  
+Tera data without permission access keia. Main ne apne haathon se tera bharosa tor dia, apne khoon ka rishta tor dia.  
+Aaj sar jhuka kar khara hun... sharm se zameen me ghusa ja raha hun. Aankh utha kar tera naam bhi nahi le sakta.
+But many next day batya Q batya k dosti ma bywefei Na rahy Na batyta to tum baat Kr Leta but ma Ni chata ta k tum Mry saaath mukhlis ho or ma Kya Kr ra
+22 June, 11 bajay... paise nahi thy tere paas us din, jeb bilkul khali thi.  
+Phir bhi tune apni izzat gira kar loan lia... sirf mere liye.  
+Biryani or bottle pelei... ik he plate, 2 chammach, pasina aur bhook dono shared kar k kheyi.  
+Bhai us waqt tera dil kitna bara tha... tune apna qarz, apna bojh mere kandhon pe nahi, apne seenay pe le lia tha.  
+Aur aaj main ne badle me tera trust, teri izzat apne mazaq me ura di. Kaise mun dikhaun tujhe?
+
+Us k baad ride pe niklay... taiz dhoop thi, aag barsa rahi thi, chamri jala rahi thi.  
+Tu peechay se tarrp kar bola "dhoop hy yaar, jaldi bhaga"... aur main hasta hua bhaga raha tha, kyunke tera saaya mere sar pe tha.  
+Phir bhi tu peechay baitha tha... kyunke tujhe yaqeen tha main girne nahi dunga. Bhai main gir gaya... tera bharosa tor kar.
+
+Tum har baat shared krty ty... main bhi krta ta.  
+Dard bhi aadha-aadha, qarz bhi aadha-aadha, khushi bhi aadha-aadha, saans bhi aadha-aadha. Har cheez shared krta ta tum ahsan kisi cheez sa mana Ni krty ty tum but mri ghalti bhut Bri hy
+Yahi to meri dunya thi bhai... tu hi meri dunya tha. Aur main ne khud apne haathon se isay ujarr dia, raakh kar dia.
+
+Dil ro raha hai bhai... raat bhar soya nahi. Teri block wali DP dekh dekh kar saans ruk rahi hai.  
+Data delete kar dia hy. Mitti me mila dia. Qasam Allah ki, Qasam Maa ki... sab khatam, sab khatam. Har cheez chk Kr sakty ho laptop mobile phone 
+Aaj ke baad teri cheez ko bina pooche dekha bhi to meri aankh nickal lna. Main khud apne haath kaat dunga bhai.
+
+Block na rakh yaar... TikTok sa insta sa wo TikTok pa strike puri krni ti 100 days abi to 22 din hovy ty ahsan wo ab mugy koi reals ni bjhta koi baat ni krta tum he ty jo sy ty mugy
+Mugy unblock Kr dy yr mujhse nafrat kar le, mujhpe thook de, gali de... par baat mat band kar.  
+Gussa kar le, maar le... par darwaza band mat kar apne gunahgaar, toote hue dost pe. Main bahar khara mar jaunga.
+
+Darban pa phir bethenge... is baar plate main khilaunga, Loan tujhse nahi lunga, qasam se nahi lunga.  
+Tu phir peechay baithna... main phir usi dhoop me jal kar bhagaunga... bas tujhe hawa lag jaye, bas tu muskurade.
+
+Maaf kar de bhai... dosti wapis kar de.  
+Main tere baghair adhoora nahi... main tere baghair laash hun, saans leti hui laash.
+
+Tera toota hua, tera gunahgaar, par aakhri saans tak tera hi,  
+[bywafa dost Muneeb]</div>
+    </div>
+    
+    <div class="message" id="noMsg">
+      <p class="special-line">Theek hai Ahsan bhai... 💔</p>
+      <p>Tu ne "BAAT NI KRUN GA" keh diya... main samajh gaya. Tera faisla mere liye hukam hai.</p>
+      <p>Bhai main tujh se naraz nahi hun... main khud apne aap se naraz hun. Kash main wo din wapis laa sakta... kasam se apna khoon de kar tera bharosa wapis le aata.</p>
+      <p>Tu hamesha mera bara bhai tha... aur rahega. Main door khara dua karunga ke Allah tujhe hamesha khush rakhe. Jab bhi dil chahay, darwaza khula paayega mere liye.</p>
+      <div class="paragraph">Ahsan 
+Bhai meri ghalti hy...  
+Tera data without permission access keia. Main ne apne haathon se tera bharosa tor dia, apne khoon ka rishta tor dia.  
+Aaj sar jhuka kar khara hun... sharm se zameen me ghusa ja raha hun. Aankh utha kar tera naam bhi nahi le sakta.
+But many next day batya Q batya k dosti ma bywefei Na rahy Na batyta to tum baat Kr Leta but ma Ni chata ta k tum Mry saaath mukhlis ho or ma Kya Kr ra
+22 June, 11 bajay... paise nahi thy tere paas us din, jeb bilkul khali thi.  
+Phir bhi tune apni izzat gira kar loan lia... sirf mere liye.  
+Biryani or bottle pelei... ik he plate, 2 chammach, pasina aur bhook dono shared kar k kheyi.  
+Bhai us waqt tera dil kitna bara tha... tune apna qarz, apna bojh mere kandhon pe nahi, apne seenay pe le lia tha.  
+Aur aaj main ne badle me tera trust, teri izzat apne mazaq me ura di. Kaise mun dikhaun tujhe?
+
+Us k baad ride pe niklay... taiz dhoop thi, aag barsa rahi thi, chamri jala rahi thi.  
+Tu peechay se tarrp kar bola "dhoop hy yaar, jaldi bhaga"... aur main hasta hua bhaga raha tha, kyunke tera saaya mere sar pe tha.  
+Phir bhi tu peechay baitha tha... kyunke tujhe yaqeen tha main girne nahi dunga. Bhai main gir gaya... tera bharosa tor kar.
+
+Tum har baat shared krty ty... main bhi krta ta.  
+Dard bhi aadha-aadha, qarz bhi aadha-aadha, khushi bhi aadha-aadha, saans bhi aadha-aadha. Har cheez shared krta ta tum ahsan kisi cheez sa mana Ni krty ty tum but mri ghalti bhut Bri hy
+Yahi to meri dunya thi bhai... tu hi meri dunya tha. Aur main ne khud apne haathon se isay ujarr dia, raakh kar dia.
+
+Dil ro raha hai bhai... raat bhar soya nahi. Teri block wali DP dekh dekh kar saans ruk rahi hai.  
+Data delete kar dia hy. Mitti me mila dia. Qasam Allah ki, Qasam Maa ki... sab khatam, sab khatam. Har cheez chk Kr sakty ho laptop mobile phone 
+Aaj ke baad teri cheez ko bina pooche dekha bhi to meri aankh nickal lna. Main khud apne haath kaat dunga bhai.
+
+Block na rakh yaar... TikTok sa insta sa wo TikTok pa strike puri krni ti 100 days abi to 22 din hovy ty ahsan wo ab mugy koi reals ni bjhta koi baat ni krta tum he ty jo sy ty mugy
+Mugy unblock Kr dy yr mujhse nafrat kar le, mujhpe thook de, gali de... par baat mat band kar.  
+Gussa kar le, maar le... par darwaza band mat kar apne gunahgaar, toote hue dost pe. Main bahar khara mar jaunga.
+
+Darban pa phir bethenge... is baar plate main khilaunga, Loan tujhse nahi lunga, qasam se nahi lunga.  
+Tu phir peechay baithna... main phir usi dhoop me jal kar bhagaunga... bas tujhe hawa lag jaye, bas tu muskurade.
+
+Maaf kar de bhai... dosti wapis kar de.  
+Main tere baghair adhoora nahi... main tere baghair laash hun, saans leti hui laash.
+
+Tera toota hua, tera gunahgaar, par aakhri saans tak tera hi,  
+[bywafa dost Muneeb]</div>
+    </div>
+  </div>
+
+<script>
+  // Barish banane ka code
+  function createRain() {
+    const rain = document.getElementById('rain');
+    for(let i = 0; i < 100; i++) {
+      const drop = document.createElement('span');
+      drop.style.left = Math.random() * 100 + '%';
+      drop.style.animationDelay = Math.random() * 2 + 's';
+      drop.style.animationDuration = 0.5 + Math.random() * 0.5 + 's';
+      rain.appendChild(drop);
+    }
+  }
+  createRain();
+  
+  function showYes() {
+    document.getElementById('buttons').style.display = 'none';
+    document.getElementById('yesMsg').classList.add('show');
+  }
+  
+  function showNo() {
+    document.getElementById('buttons').style.display = 'none';
+    document.getElementById('noMsg').classList.add('show');
+  }
+</script>
+</body>
+</html>
